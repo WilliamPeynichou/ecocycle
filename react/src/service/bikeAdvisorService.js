@@ -22,7 +22,7 @@ export const sendMessageToAgent = async (message, sessionId) => {
   } catch (error) {
     console.error('Erreur agent vélo:', error);
     // Retourne une réponse de fallback en cas d'erreur
-    return 'Je suis votre conseiller vélo ! Dites-moi quel type de vélo vous cherchez (VTT, route, ville, électrique) et je vous aiderai à choisir.';
+    return 'Je suis votre conseiller vélo ! Dites-moi quel sont vos besoins et vos objectifs';
   }
 };
 
