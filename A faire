@@ -1,7 +1,7 @@
 -Installer n8n en local et configurer mon agent en Local via llm OpenIA
 -BDD
 -Creer une API de ma table produit pour la mettre en outil a mon agent
--Lieer mon agent a l'API pour y definir
+-Lieer mon agent a l'API pour y definir les produits
 
 1
 SELECT id_client, nom, ville 
@@ -42,4 +42,7 @@ FROM clients c
 INNER JOIN commandes co ON c.id_client = co.id_client
 WHERE co.date_commande BETWEEN '2024-01-01' AND '2024-12-31';
 
-
+8
+SELECT lc.id_ligne_commande, lc.quantite, lc.prix_unitaire, p.nom_produit, p.prix
+FROM lignes_commandes lc
+INNER JOIN produits p ON lc.id_produit = p.id_produit;

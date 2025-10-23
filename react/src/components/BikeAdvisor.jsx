@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { sendMessageToAgent } from '../service/bikeAdvisorService';
 import './BikeAdvisor.css';
 
-const BikeAdvisor = () => {
+const BikeAdvisor = ({ onToggle }) => {
   const [messages, setMessages] = useState([
     {
       role: 'agent',
@@ -12,6 +12,7 @@ const BikeAdvisor = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState('087eac84444f4a16a6daeeb1a995cbb1');
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -46,53 +47,74 @@ const BikeAdvisor = () => {
   };
 
   return (
-    <div className="bike-advisor">
-      <div className="advisor-header">
-        <h3>🚴‍♂️ Conseiller Vélo</h3>
-        <p>Posez-moi vos questions sur les vélos !</p>
-      </div>
-      
-      <div className="chat-container">
-        <div className="messages">
-          {messages.map((msg, i) => (
-            <div key={i} className={`message ${msg.role}`}>
-              <div className="message-content">
-                {msg.text}
-              </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="message agent">
-              <div className="message-content">
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-            </div>
-          )}
+    <>
+      {/* Bouton Toggle */}
+      <button 
+        className={`agent-toggle ${isOpen ? 'open' : ''}`}
+        onClick={() => {
+          const newState = !isOpen;
+          setIsOpen(newState);
+          onToggle(newState);
+        }}
+        aria-label={isOpen ? 'Fermer le conseiller' : 'Ouvrir le conseiller'}
+      >
+        <span className="toggle-icon">
+          {isOpen ? '✕' : '🚴‍♂️'}
+        </span>
+        <span className="toggle-text">
+          {isOpen ? 'Fermer' : 'Conseiller'}
+        </span>
+      </button>
+
+      {/* Agent Panel */}
+      <div className={`bike-advisor ${isOpen ? 'open' : ''}`}>
+        <div className="advisor-header">
+          <h3>🚴‍♂️ Conseiller Vélo</h3>
+          <p>Posez-moi vos questions sur les vélos !</p>
         </div>
         
-        <div className="input-container">
-          <input 
-            type="text"
-            value={input} 
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Posez votre question sur les vélos..."
-            disabled={isLoading}
-          />
-          <button 
-            onClick={handleSend}
-            disabled={isLoading || !input.trim()}
-            className="send-button"
-          >
-            {isLoading ? '⏳' : '➤'}
-          </button>
+        <div className="chat-container">
+          <div className="messages">
+            {messages.map((msg, i) => (
+              <div key={i} className={`message ${msg.role}`}>
+                <div className="message-content">
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="message agent">
+                <div className="message-content">
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          <div className="input-container">
+            <input 
+              type="text"
+              value={input} 
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Posez votre question sur les vélos..."
+              disabled={isLoading}
+            />
+            <button 
+              onClick={handleSend}
+              disabled={isLoading || !input.trim()}
+              className="send-button"
+            >
+              {isLoading ? '⏳' : '➤'}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

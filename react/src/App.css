@@ -5,16 +5,52 @@
   color: var(--color-black);
 }
 
-/* Main content avec marge pour l'agent fixe */
+/* Main content - Layout dynamique selon état agent */
 .main-content {
-  margin-right: 400px; /* Espace pour l'agent fixe */
-  transition: margin-right 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-/* Mobile - pas de marge */
-@media (max-width: 768px) {
-  .main-content {
+/* Desktop - Agent ouvert par défaut */
+.main-content.agent-open {
+  margin-right: 400px;
+}
+
+.main-content.agent-closed {
+  margin-right: 0;
+}
+
+/* Tablet - Agent ouvert par défaut */
+@media (max-width: 1024px) {
+  .main-content.agent-open {
+    margin-right: 350px;
+  }
+  
+  .main-content.agent-closed {
     margin-right: 0;
+  }
+}
+
+/* Mobile - Agent ouvert par défaut */
+@media (max-width: 768px) {
+  .main-content.agent-open {
+    margin-right: 0;
+    margin-bottom: 60vh; /* Espace pour l'agent mobile */
+  }
+  
+  .main-content.agent-closed {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .main-content.agent-open {
+    margin-bottom: 70vh;
+  }
+  
+  .main-content.agent-closed {
+    margin-bottom: 0;
   }
 }
 
