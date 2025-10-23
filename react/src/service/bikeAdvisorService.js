@@ -18,11 +18,17 @@ export const sendMessageToAgent = async (message, sessionId) => {
     }
     
     const data = await response.json();
-    return data.advice || data.message || 'Désolé, je n\'ai pas pu traiter votre demande.';
+    
+    // Si pas de réponse de l'agent n8n, retourne null
+    if (!data.advice) {
+      return null;
+    }
+    
+    return data.advice;
   } catch (error) {
     console.error('Erreur agent vélo:', error);
-    // Retourne une réponse de fallback en cas d'erreur
-    return 'Je suis votre conseiller vélo ! Dites-moi quel sont vos besoins et vos objectifs';
+    // Retourne null en cas d'erreur pour forcer l'utilisation de n8n
+    return null;
   }
 };
 

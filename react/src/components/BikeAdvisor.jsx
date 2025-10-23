@@ -11,7 +11,7 @@ const BikeAdvisor = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [sessionId] = useState(`session-${Date.now()}`);
+  const [sessionId] = useState('087eac84444f4a16a6daeeb1a995cbb1');
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -23,14 +23,16 @@ const BikeAdvisor = () => {
 
     try {
       const response = await sendMessageToAgent(input, sessionId);
-      const agentMessage = { role: 'agent', text: response };
-      setMessages(prev => [...prev, agentMessage]);
+      
+      // Si pas de réponse de l'agent n8n, ne pas ajouter de message
+      if (response) {
+        const agentMessage = { role: 'agent', text: response };
+        setMessages(prev => [...prev, agentMessage]);
+      }
     } catch (error) {
-      const errorMessage = { 
-        role: 'agent', 
-        text: 'Désolé, je rencontre un problème technique. Pouvez-vous réessayer ?' 
-      };
-      setMessages(prev => [...prev, errorMessage]);
+
+      console.error('Erreur communication agent:', error);
+      // Ne pas afficher de message d'erreur, laisser l'utilisateur réessayer
     } finally {
       setIsLoading(false);
     }
