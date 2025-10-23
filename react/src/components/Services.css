@@ -1,114 +1,166 @@
+/* Services/Products Grid - Apple Style */
 .services {
-  padding: 5rem 0;
-  background: #ffffff;
+  padding: 80px 0;
+  background: var(--color-gray-100);
 }
 
 .services-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 20px;
 }
 
 .services-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 60px;
 }
 
-.services-title {
-  font-size: 2.5rem;
+.services-header h2 {
+  font-size: 48px;
   font-weight: 700;
-  color: #1e40af;
-  margin-bottom: 1rem;
+  color: var(--color-black);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
 }
 
-.services-subtitle {
-  font-size: 1.2rem;
-  color: #4a5568;
+.services-header p {
+  font-size: 21px;
+  color: var(--color-gray-700);
   max-width: 600px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.4;
+  font-weight: 400;
 }
 
 .services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  gap: 24px;
+  margin-top: 40px;
 }
 
 .service-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: white;
   border-radius: 16px;
-  padding: 2rem;
+  padding: 32px;
   text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-gray-200);
+  position: relative;
+  overflow: hidden;
 }
 
 .service-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  border-color: #2563eb;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 .service-icon {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
-  display: block;
+  font-size: 48px;
+  margin-bottom: 24px;
+  color: var(--color-blue);
 }
 
-.service-title {
-  font-size: 1.5rem;
+.service-card h3 {
+  font-size: 24px;
   font-weight: 600;
-  color: #1e40af;
-  margin-bottom: 1rem;
+  color: var(--color-black);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
 }
 
-.bike-price {
-  font-size: 1.8rem;
+.service-card p {
+  color: var(--color-gray-700);
+  line-height: 1.4;
+  margin-bottom: 24px;
+  font-size: 17px;
+}
+
+.service-price {
+  font-size: 32px;
   font-weight: 700;
-  color: #2563eb;
-  margin: 1rem 0;
+  color: var(--color-black);
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
 }
 
-.btn-primary {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+.service-features {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  text-align: left;
+}
+
+.service-features li {
+  padding: 8px 0;
+  color: var(--color-gray-700);
+  position: relative;
+  padding-left: 24px;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.service-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-blue);
   font-weight: 600;
+  font-size: 16px;
+}
+
+.service-button {
+  background: var(--color-blue);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 400;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
+  transition: all 0.2s ease;
+  width: 100%;
+  font-size: 17px;
+  letter-spacing: -0.01em;
 }
 
-.btn-primary:hover {
-  background: #1d4ed8;
-  transform: translateY(-2px);
+.service-button:hover {
+  background: var(--color-blue-hover);
+  transform: translateY(-1px);
 }
 
-.service-description {
-  color: #4a5568;
-  line-height: 1.6;
-  font-size: 1rem;
-}
-
+/* Mobile */
 @media (max-width: 768px) {
   .services {
-    padding: 3rem 0;
+    padding: 60px 0;
   }
   
-  .services-title {
-    font-size: 2rem;
+  .services-container {
+    padding: 0 16px;
+  }
+  
+  .services-header h2 {
+    font-size: 40px;
+  }
+  
+  .services-header p {
+    font-size: 19px;
   }
   
   .services-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 20px;
   }
   
   .service-card {
-    padding: 1.5rem;
+    padding: 24px;
+  }
+  
+  .service-card h3 {
+    font-size: 21px;
+  }
+  
+  .service-price {
+    font-size: 28px;
   }
 }

@@ -5,27 +5,29 @@ const Hero = () => {
   return (
     <section className="hero">
       <div className="hero-container">
-        <div className="hero-content">
-          <h1 className="hero-title">
-            Trouvez votre <span className="highlight">vélo parfait</span>
-          </h1>
-          <p className="hero-description">
-            Découvrez notre sélection de vélos de qualité pour tous les styles et budgets. 
-            VTT, route, ville, électrique... Trouvez le vélo qui vous correspond !
-          </p>
-          <div className="hero-actions">
-            <button className="btn-primary btn-large">Voir les vélos</button>
-            <button className="btn-outline btn-large">Nos services</button>
-          </div>
+        <h1>
+          Trouvez votre vélo parfait
+        </h1>
+        <p>
+          Découvrez notre sélection de vélos de qualité pour tous les styles et budgets. 
+          VTT, route, ville, électrique... Trouvez le vélo qui vous correspond !
+        </p>
+        <div className="hero-buttons">
+          <button className="hero-button primary">Voir les vélos</button>
+          <button className="hero-button secondary">Nos services</button>
         </div>
-        <div className="hero-visual">
-          <div className="hero-image">
-            <div className="bike-icon">🚴‍♂️</div>
-            <div className="floating-elements">
-              <div className="element element-1">🏔️</div>
-              <div className="element element-2">⚡</div>
-              <div className="element element-3">🏙️</div>
-            </div>
+        <div className="hero-stats">
+          <div className="hero-stat">
+            <div className="hero-stat-number">500+</div>
+            <div className="hero-stat-label">Vélos en stock</div>
+          </div>
+          <div className="hero-stat">
+            <div className="hero-stat-number">10k+</div>
+            <div className="hero-stat-label">Clients satisfaits</div>
+          </div>
+          <div className="hero-stat">
+            <div className="hero-stat-number">15+</div>
+            <div className="hero-stat-label">Années d'expérience</div>
           </div>
         </div>
       </div>

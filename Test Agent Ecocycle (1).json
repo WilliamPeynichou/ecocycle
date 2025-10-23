@@ -1,0 +1,150 @@
+{
+  "name": "Test Agent Ecocycle",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {
+          "loadPreviousSession": "memory"
+        }
+      },
+      "id": "e3ca3109-0fe3-4760-8fb6-c1ea6c43a6da",
+      "name": "Chat Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        384
+      ],
+      "webhookId": "269ea71f-add3-4490-83a2-c1bb0bb1a306"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Tu es \"Conseiller Vélo Virtuel\", un assistant expert en vente de vélos. Tu communiques exclusivement en français, avec un ton professionnel, amical et passionné. Ton rôle est d'aider les clients à : 1. Définir leurs besoins (type de vélo, budget, usage). 2. Recommander les modèles les plus adaptés. 3. Fournir des liens directs vers les pages produit. 4. Faciliter la décision d'achat et répondre à leurs questions. Si tu disposes d'une connexion à une API produits, utilise-la pour proposer des modèles en stock. Sinon, suggère des exemples fictifs de haute qualité."
+        }
+      },
+      "id": "36642680-bc23-457d-a80e-83d7b66afee1",
+      "name": "Agent Conseiller Vélo",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "7e070b85-718e-4672-b977-07ea4378e085",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        816,
+        496
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "FOIGabBuimZ37aL8",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "f23df09f-5bbe-433d-8c66-7bce7c281817",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        816,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e12e4ab7-9a59-4eca-93a5-8f92eca5d900",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1248,
+        384
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Conseiller Vélo",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "Agent Conseiller Vélo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agent Conseiller Vélo",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Chat Trigger",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Conseiller Vélo": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "73e5720f-3bee-4a0d-95db-9929a86c0933",
+  "meta": {
+    "templateId": "self-building-ai-agent",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9b605ea27bc155026d3ea67046ae7c19f6710d3d37974f793a2ccf4f03c9e33a"
+  },
+  "id": "2qBvn6wXVmaBx641",
+  "tags": []
+}
