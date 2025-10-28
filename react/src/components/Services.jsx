@@ -19,14 +19,12 @@ const Services = () => {
   const loadBikes = async () => {
     try {
       setLoading(true);
-      console.log('Chargement des vélos...');
       const data = await bikeService.getAllBikes();
-      console.log('Données reçues:', data);
       setBikes(data);
       setError(null);
     } catch (err) {
       setError('Erreur lors du chargement des vélos');
-      console.error('Erreur lors du chargement:', err);
+      console.error(err);
     } finally {
       setLoading(false);
     }

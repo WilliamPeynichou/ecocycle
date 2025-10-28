@@ -5,14 +5,11 @@ export const bikeService = {
   // Récupérer tous les vélos
   async getAllBikes() {
     try {
-      console.log('Appel API getAllBikes vers:', `${API_BASE_URL}/products`);
       const response = await fetch(`${API_BASE_URL}/products`);
-      console.log('Réponse reçue:', response.status, response.statusText);
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des vélos');
       }
       const data = await response.json();
-      console.log('Données JSON:', data);
       return data.data || []; // Utiliser la structure de la nouvelle API
     } catch (error) {
       console.error('Erreur bikeService.getAllBikes:', error);
@@ -90,10 +87,11 @@ export const bikeService = {
 
   // Formater le prix
   formatPrice(price) {
+    const numericPrice = parseFloat(price);
     return new Intl.NumberFormat('fr-FR', {
       style: 'currency',
       currency: 'EUR'
-    }).format(price);
+    }).format(numericPrice);
   },
 
   // Formater la description (tronquer si trop longue)
