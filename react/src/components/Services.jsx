@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { bikeService } from '../service/bikeService';
+import ProductModal from './ProductModal';
 import './Services.css';
 
 const Services = () => {
@@ -10,6 +11,8 @@ const Services = () => {
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
   useEffect(() => {
     loadBikes();
@@ -83,6 +86,16 @@ const Services = () => {
     setSearchQuery('');
     setPriceRange({ min: '', max: '' });
     loadBikes();
+  };
+
+  const handleProductClick = (productId) => {
+    setSelectedProductId(productId);
+    setIsProductModalOpen(true);
+  };
+
+  const handleCloseProductModal = () => {
+    setIsProductModalOpen(false);
+    setSelectedProductId(null);
   };
 
   return (
@@ -183,7 +196,12 @@ const Services = () => {
                     <div className="bike-price">
                       {bikeService.formatPrice(bike.price)}
                     </div>
-                    <button className="btn-primary">Voir détails</button>
+                    <button 
+                      className="btn-primary"
+                      onClick={() => handleProductClick(bike.id)}
+                    >
+                      Voir détails
+                    </button>
                   </div>
                 </div>
               ))}
@@ -198,6 +216,12 @@ const Services = () => {
           </>
         )}
       </div>
+      
+      <ProductModal
+        productId={selectedProductId}
+        isOpen={isProductModalOpen}
+        onClose={handleCloseProductModal}
+      />
     </section>
   );
 };
