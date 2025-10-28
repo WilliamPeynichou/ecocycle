@@ -1,7 +1,8 @@
 import React from 'react';
+import UserMenu from './UserMenu';
 import './Header.css';
 
-const Header = () => {
+const Header = ({ user, onLoginClick, onLogout }) => {
   return (
     <header className="header">
       <div className="header-container">
@@ -20,7 +21,13 @@ const Header = () => {
         <div className="header-actions">
           <button className="btn-icon">🔍</button>
           <button className="btn-icon">🛒</button>
-          <button className="btn-primary">Mon compte</button>
+          {user ? (
+            <UserMenu user={user} onLogout={onLogout} />
+          ) : (
+            <button className="btn-primary" onClick={onLoginClick}>
+              Mon compte
+            </button>
+          )}
         </div>
       </div>
     </header>
