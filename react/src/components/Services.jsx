@@ -117,9 +117,9 @@ const Services = () => {
               className="category-select"
             >
               <option value="">Toutes les catégories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
+              {categories.map((categoryObj) => (
+                <option key={categoryObj.category} value={categoryObj.category}>
+                  {categoryObj.category} ({categoryObj.productCount})
                 </option>
               ))}
             </select>
