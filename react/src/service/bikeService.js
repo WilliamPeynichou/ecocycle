@@ -9,7 +9,8 @@ export const bikeService = {
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des vélos');
       }
-      return await response.json();
+      const data = await response.json();
+      return data.data || []; // Utiliser la structure de la nouvelle API
     } catch (error) {
       console.error('Erreur bikeService.getAllBikes:', error);
       return [];
@@ -23,7 +24,8 @@ export const bikeService = {
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des vélos par catégorie');
       }
-      return await response.json();
+      const data = await response.json();
+      return data.data || [];
     } catch (error) {
       console.error('Erreur bikeService.getBikesByCategory:', error);
       return [];
@@ -45,7 +47,8 @@ export const bikeService = {
       if (!response.ok) {
         throw new Error('Erreur lors de la recherche de vélos');
       }
-      return await response.json();
+      const data = await response.json();
+      return { products: data.data || [], total: data.total || 0, limit: limit, offset: offset };
     } catch (error) {
       console.error('Erreur bikeService.searchBikes:', error);
       return { products: [], total: 0, limit: limit, offset: offset };
@@ -59,7 +62,8 @@ export const bikeService = {
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des catégories');
       }
-      return await response.json();
+      const data = await response.json();
+      return data.data || [];
     } catch (error) {
       console.error('Erreur bikeService.getCategories:', error);
       return [];
@@ -73,7 +77,8 @@ export const bikeService = {
       if (!response.ok) {
         throw new Error('Vélo non trouvé');
       }
-      return await response.json();
+      const data = await response.json();
+      return data.data;
     } catch (error) {
       console.error('Erreur bikeService.getBikeById:', error);
       return null;
