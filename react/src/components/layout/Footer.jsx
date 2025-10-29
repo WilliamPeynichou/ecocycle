@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-content">
           <div className="footer-brand">
-            <div className="footer-logo">BikeShop</div>
+            <div className="footer-logo">Ecocycle</div>
             <p className="footer-description">
               Votre spécialiste vélo depuis 2020. Qualité, service et passion du cyclisme.
             </p>

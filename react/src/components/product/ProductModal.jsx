@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { bikeService } from '../service/bikeService';
+import { bikeService } from '../../service/bikeService';
 import ProductDetail from './ProductDetail';
 import './ProductDetail.css';
 

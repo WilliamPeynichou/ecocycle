@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authService } from '../service/authService';
+import { authService } from '../../service/authService';
 import './Auth.css';
 
 const Register = ({ onRegister, onSwitchToLogin, onClose }) => {

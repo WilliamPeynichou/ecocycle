@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import BikeAdvisor from './components/BikeAdvisor';
-import Footer from './components/Footer';
-import AuthModal from './components/AuthModal';
+import Header from './components/layout/Header';
+import Hero from './components/common/Hero';
+import ProductList from './components/product/ProductList';
+import BikeAdvisor from './components/agent/BikeAdvisor';
+import Footer from './components/layout/Footer';
+import AuthModal from './components/auth/AuthModal';
 import { authService } from './service/authService';
 import './App.css';
 
@@ -71,7 +71,7 @@ function App() {
       />
       <main className={`main-content ${isAgentOpen ? 'agent-open' : 'agent-closed'}`}>
         <Hero />
-        <Services />
+        <ProductList />
       </main>
       <Footer />
       <BikeAdvisor onToggle={handleAgentToggle} />

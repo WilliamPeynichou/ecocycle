@@ -1,5 +1,5 @@
 import React from 'react';
-import UserMenu from './UserMenu';
+import UserMenu from '../auth/UserMenu';
 import './Header.css';
 
 const Header = ({ user, onLoginClick, onLogout }) => {
@@ -7,7 +7,7 @@ const Header = ({ user, onLoginClick, onLogout }) => {
     <header className="header">
       <div className="header-container">
         <div className="logo">
-          <h1>🚴‍♂️ BikeShop</h1>
+          <h1>Ecocycle</h1>
         </div>
         <nav className="navigation">
           <ul className="nav-list">

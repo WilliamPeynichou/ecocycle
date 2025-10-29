@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { bikeService } from '../service/bikeService';
+import { bikeService } from '../../service/bikeService';
 import ProductModal from './ProductModal';
-import './Services.css';
+import './ProductList.css';
 
-const Services = () => {
+const ProductList = () => {
   const [bikes, setBikes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -226,4 +226,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default ProductList;

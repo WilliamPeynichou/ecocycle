@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { sendMessageToAgent } from '../service/bikeAdvisorService';
+import { sendMessageToAgent } from '../../service/bikeAdvisorService';
 import './BikeAdvisor.css';
 
 const BikeAdvisor = ({ onToggle }) => {
@@ -69,8 +69,8 @@ const BikeAdvisor = ({ onToggle }) => {
       {/* Agent Panel */}
       <div className={`bike-advisor ${isOpen ? 'open' : ''}`}>
         <div className="advisor-header">
-          <h3>🚴‍♂️ Conseiller Vélo</h3>
-          <p>Posez-moi vos questions sur les vélos !</p>
+          <h3>Conseiller Vélo</h3>
+          <p>Posez-moi vos questions !</p>
         </div>
         
         <div className="chat-container">
@@ -109,7 +109,7 @@ const BikeAdvisor = ({ onToggle }) => {
               disabled={isLoading || !input.trim()}
               className="send-button"
             >
-              {isLoading ? '⏳' : '➤'}
+              {isLoading ? 'envoi...' : '➤'}
             </button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authService } from '../service/authService';
+import { authService } from '../../service/authService';
 import './UserMenu.css';
 
 const UserMenu = ({ user, onLogout }) => {
