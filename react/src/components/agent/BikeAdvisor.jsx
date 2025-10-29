@@ -58,9 +58,7 @@ const BikeAdvisor = ({ onToggle }) => {
         }}
         aria-label={isOpen ? 'Fermer le conseiller' : 'Ouvrir le conseiller'}
       >
-        <span className="toggle-icon">
-          {isOpen ? '✕' : '🚴‍♂️'}
-        </span>
+
         <span className="toggle-text">
           {isOpen ? 'Fermer' : 'Conseiller'}
         </span>

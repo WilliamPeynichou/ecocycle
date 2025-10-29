@@ -1,26 +1,8 @@
 -Installer n8n en local et configurer mon agent en Local via llm OpenIA
--BDD
+-BDD (user et accesoire et gestion achat)
 -Creer une API de ma table produit pour la mettre en outil a mon agent
--Lieer mon agent a l'API pour y definir les produits
+-Page Prfil
+-Gestion Admin et super admin
+-Mettre a jour les reponse de l'agent en privilégiant les produits sur le site
 
-prompt prochaine feature: 
 
-ok maintenant nous devons mettre a jour notre base de donnée. IMPORTANT, MET A JOUR VIA LES ENTITY ET FAIS VIA LA MIGRATION, ET APRES MET A JOUR l'API
-Le but de cette mise a jour serra d'ameliorer les infos concernant les velos. je vais donc te demander de creer plusieurs tables, anoter que chaque table aura une colonne "Descritption" et tout ces tables seront dans ma table produit en foreign key. Avant tout cela ajoute une colonne "years" pour determiné l'année du velo
-Par conséquent je veux ces tables: 
--Type_velo:
-cette table aura différents type de velo comme (route, gravel, vtt,urbain, vintage, fixie et chaque type de velo pourra etre electrique ou non) de plus il y aura un lien avec une Table Matiere qui indiquera la matiere du cadre du velo
--Frame_Size:
-cette table aura dedans (la liste des taille en rapport avec le VTT en pouces, la meme pour le route et le gravel) et de plus je veux une colonne qui dit si c'est un velo enfant ou non. 
--wheel_size
-idem pour la table frame_size sauf que tu adpate avec des taille de roue
--Tyres 
-cette table va repertorié tout les type de pneus (tubeless, boyaux, chambre a air ect...)
--Brand
-repertoriera toutes les marques en stock
--transmition_type
-va repertorié tout les type de transmition (unique, fixie, mecanique, electronique)
--brake_type
-type de systeme de frein (patin, diques, retropedalage( peut etre nul ))
--team
-si et uniquement si le velo est utilisé par une equipe pro cette table va repertorié toutes les equipes World Tour certifié par l'UCI
