@@ -151,8 +151,11 @@
   content: "💬";
 }
 
-.product-specs h3::before {
-  content: "⚙️";
+.product-specs h3 {
+  margin: 0 0 1rem 0;
+  color: #1f2937;
+  font-size: 1.125rem;
+  font-weight: 600;
 }
 
 .product-description p {
@@ -223,6 +226,88 @@
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.875rem;
+}
+
+/* Badges et éléments spéciaux */
+.electric-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.child-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  background: linear-gradient(135deg, #ec4899, #db2777);
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.world-tour-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.brand-name {
+  font-weight: 600;
+  color: #1e40af;
+  font-size: 1.05rem;
+}
+
+.matiere-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.matiere-info strong {
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+.matiere-desc {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: normal;
+}
+
+.team-name {
+  font-weight: 600;
+  color: #7c3aed;
+  font-size: 1.05rem;
+}
+
+.spec-item.full-width {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.spec-item.full-width .spec-label {
+  margin-bottom: 0.25rem;
+}
+
+.team-section {
+  background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+  border: 1px solid #e9d5ff;
+}
+
+.team-section h3 {
+  color: #7c3aed;
 }
 
 .product-actions {
