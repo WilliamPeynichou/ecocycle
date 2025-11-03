@@ -1,8 +1,9 @@
 import React from 'react';
 import UserMenu from '../auth/UserMenu';
+import DarkModeButon from '../miniOptions/DarkModeButon';
 import './Header.css';
 
-const Header = ({ user, onLoginClick, onLogout }) => {
+const Header = ({ user, onLoginClick, onLogout, isDarkMode, onDarkModeToggle }) => {
   return (
     <header className="header">
       <div className="header-container">
@@ -19,6 +20,7 @@ const Header = ({ user, onLoginClick, onLogout }) => {
           </ul>
         </nav>
         <div className="header-actions">
+          <DarkModeButon isDarkMode={isDarkMode} onToggle={onDarkModeToggle} />
           <button className="btn-icon">🔍</button>
           <button className="btn-icon">🛒</button>
           {user ? (

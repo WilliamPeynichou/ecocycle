@@ -13,6 +13,16 @@ function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Appliquer le dark mode sur le body
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark-mode');
+    } else {
+      document.documentElement.classList.remove('dark-mode');
+    }
+  }, [isDarkMode]);
 
   // Vérifier l'authentification au chargement de l'app
   useEffect(() => {
@@ -53,6 +63,10 @@ function App() {
     setUser(null);
   };
 
+  const handleDarkModeToggle = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   if (isLoading) {
     return (
       <div className="loading-screen">
@@ -67,7 +81,9 @@ function App() {
       <Header 
         user={user} 
         onLoginClick={handleLoginClick} 
-        onLogout={handleLogout} 
+        onLogout={handleLogout}
+        isDarkMode={isDarkMode}
+        onDarkModeToggle={handleDarkModeToggle}
       />
       <main className={`main-content ${isAgentOpen ? 'agent-open' : 'agent-closed'}`}>
         <Hero />

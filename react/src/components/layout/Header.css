@@ -8,6 +8,12 @@
   top: 0;
   z-index: 1000;
   padding: 12px 0;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.dark-mode .header {
+  background: rgba(0, 0, 0, 0.8);
+  border-bottom: 1px solid var(--color-gray-700);
 }
 
 .header-container {
@@ -163,6 +169,10 @@
     background: var(--color-gray-100);
     border-radius: 12px;
     margin-top: 12px;
+  }
+  
+  .dark-mode .nav-list {
+    background: var(--color-gray-800);
   }
   
   .header-actions {

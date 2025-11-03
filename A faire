@@ -4,5 +4,90 @@
 -Page Prfil
 -Gestion Admin et super admin
 -Mettre a jour les reponse de l'agent en privilégiant les produits sur le site
+-systeme de vente:
+    panier 
+    bdd panier 
+    bdd factures
+
+Oral Mikalai et David
+Question 1
+
+Express peut t'il vivre sans node ?
+Non, express est creer pour Node
+
+Question 2
+
+Node est installé dans react ?
+Non
+
+Question 3
+
+Router etablis des endpoint ?
+non il etablis un chemin
+
+
+Question 4
+
+C'est quoi une route ? (avec router)
+c'est un chemin
+
+Oral Vanessa et OB
+Question 5
+
+Qui envoie l'affichage des erreurs 404 ?
+c'est express qui peut gerer la route, si elle est pas fais notre client peut l'afficher, sinon react lui peut afficher une erreur 404 pre definit qui contient une condition qui dit que cette page s'affiche si l'erreur est compris
+
+Question 6
+
+dans la gestion des status a quoi sert le path ?
+definit le chemin de ma request
+
+Question 7
+
+Quelles sont les conditons pour qu'un endpoint s'execute ?
+Faut que le chemin concorde avec un endpoint
+
+Oral Edouard et Tony
+Question 8
+
+A quoi sert stringify ? 
+ca translate notre code JS en Json
+
+Question 9
+
+Pourquoi on envoie les données en Json ?
+Car ca nous permet d'etablir une API et de plus le json est plus leger
+
+Oral Tib et mika
+Question 10
+
+qu'est que le handleSubmit ? 
+
+Question 11
+
+Number(Value) c'est un objet
+
+Oral Sheriffe, Andre et Peterse
+
+Question 12
+
+qu'est que NODE ?
+C'est une bibliotheque de JS 
+
+Oral Victor, Kenzo et OP
+
+Question 13
+
+c'est quoi le parseInt ?
+ça nous permet de d'envoyer a notre front en json l'information que c'est un nombre
+
+Pseudo
+text area
+age (nombre entier)
+Mdp regex 6 caractére
+Mail (format email)
+
+
+enfait jme dit faire ce qu'on va faire c'ets pas hors sujet ? de faire un "tuto" cursor
 
 

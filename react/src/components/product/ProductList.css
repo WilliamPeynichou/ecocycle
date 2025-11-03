@@ -1,7 +1,12 @@
 /* Services/Products Grid - Apple Style */
 .services {
   padding: 80px 0;
-  background: var(--color-gray-100);
+  background: linear-gradient(135deg, var(--color-gray-100) 0%, white 100%);
+  transition: background 0.3s ease;
+}
+
+.dark-mode .services {
+  background: #000000;
 }
 
 .services-container {
