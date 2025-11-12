@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { authService } from '../../service/authService';
 import './UserMenu.css';
 
-const UserMenu = ({ user, onLogout }) => {
+const UserMenu = ({ user, onLogout, onProfileClick }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -74,13 +74,17 @@ const UserMenu = ({ user, onLogout }) => {
           </div>
 
           <div className="user-menu-actions">
-            <button className="menu-action-btn">
+            <button 
+              className="menu-action-btn"
+              onClick={() => {
+                if (onProfileClick) {
+                  onProfileClick();
+                }
+                setIsOpen(false);
+              }}
+            >
               <span>👤</span>
               Mon profil
-            </button>
-            <button className="menu-action-btn">
-              <span>⚙️</span>
-              Paramètres
             </button>
             {authService.isAdmin() && (
               <button className="menu-action-btn">

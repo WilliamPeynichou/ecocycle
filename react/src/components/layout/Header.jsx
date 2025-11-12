@@ -3,7 +3,7 @@ import UserMenu from '../auth/UserMenu';
 import DarkModeButon from '../miniOptions/DarkModeButon';
 import './Header.css';
 
-const Header = ({ user, onLoginClick, onLogout, isDarkMode, onDarkModeToggle }) => {
+const Header = ({ user, onLoginClick, onProfileClick, onLogout, isDarkMode, onDarkModeToggle }) => {
   return (
     <header className="header">
       <div className="header-container">
@@ -24,7 +24,7 @@ const Header = ({ user, onLoginClick, onLogout, isDarkMode, onDarkModeToggle }) 
           <button className="btn-icon">🔍</button>
           <button className="btn-icon">🛒</button>
           {user ? (
-            <UserMenu user={user} onLogout={onLogout} />
+            <UserMenu user={user} onLogout={onLogout} onProfileClick={onProfileClick} />
           ) : (
             <button className="btn-primary" onClick={onLoginClick}>
               Mon compte

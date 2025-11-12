@@ -5,12 +5,14 @@ import ProductList from './components/product/ProductList';
 import BikeAdvisor from './components/agent/BikeAdvisor';
 import Footer from './components/layout/Footer';
 import AuthModal from './components/auth/AuthModal';
+import Profile from './components/profile/Profile';
 import { authService } from './service/authService';
 import './App.css';
 
 function App() {
   const [isAgentOpen, setIsAgentOpen] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -61,10 +63,23 @@ function App() {
 
   const handleLogout = () => {
     setUser(null);
+    setShowProfile(false);
   };
 
   const handleDarkModeToggle = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  const handleProfileClick = () => {
+    setShowProfile(true);
+  };
+
+  const handleProfileBack = () => {
+    setShowProfile(false);
+  };
+
+  const handleUserUpdate = (updatedUser) => {
+    setUser(updatedUser);
   };
 
   if (isLoading) {
@@ -80,16 +95,27 @@ function App() {
     <div className="App">
       <Header 
         user={user} 
-        onLoginClick={handleLoginClick} 
+        onLoginClick={handleLoginClick}
+        onProfileClick={handleProfileClick}
         onLogout={handleLogout}
         isDarkMode={isDarkMode}
         onDarkModeToggle={handleDarkModeToggle}
       />
-      <main className={`main-content ${isAgentOpen ? 'agent-open' : 'agent-closed'}`}>
-        <Hero />
-        <ProductList />
-      </main>
-      <Footer />
+      {showProfile && user ? (
+        <Profile 
+          user={user}
+          onBack={handleProfileBack}
+          onUserUpdate={handleUserUpdate}
+        />
+      ) : (
+        <>
+          <main className={`main-content ${isAgentOpen ? 'agent-open' : 'agent-closed'}`}>
+            <Hero />
+            <ProductList />
+          </main>
+          <Footer />
+        </>
+      )}
       <BikeAdvisor onToggle={handleAgentToggle} />
       <AuthModal 
         isOpen={isAuthModalOpen}
