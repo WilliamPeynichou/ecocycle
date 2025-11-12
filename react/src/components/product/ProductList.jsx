@@ -1,23 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { bikeService } from '../../service/bikeService';
 import ProductModal from './ProductModal';
+import BikeFilters from './BikeFilters';
 import './ProductList.css';
 
 const ProductList = () => {
   const [bikes, setBikes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    search: '',
+    category: '',
+    minPrice: '',
+    maxPrice: '',
+    brandId: '',
+    brakeTypeId: '',
+    transmitionTypeId: '',
+    frameSizeId: '',
+    wheelSizeId: '',
+    typeVeloId: '',
+    tyresId: '',
+    teamId: '',
+  });
 
   useEffect(() => {
     loadBikes();
-    loadCategories();
   }, []);
+
+  // Recherche avec debounce
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      performSearch();
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [filters]);
 
   const loadBikes = async () => {
     try {
@@ -33,26 +52,21 @@ const ProductList = () => {
     }
   };
 
-  const loadCategories = async () => {
-    try {
-      const data = await bikeService.getCategories();
-      setCategories(data);
-    } catch (err) {
-      console.error('Erreur lors du chargement des catégories:', err);
-    }
-  };
-
-  const handleSearch = async () => {
+  const performSearch = async () => {
     try {
       setLoading(true);
-      const data = await bikeService.searchBikes(
-        searchQuery,
-        selectedCategory,
-        priceRange.min,
-        priceRange.max,
-        50
+      const hasFilters = Object.values(filters).some(
+        (val) => val !== null && val !== '' && val !== undefined
       );
-      setBikes(data.products);
+
+      let data;
+      if (hasFilters) {
+        data = await bikeService.searchBikes(filters, 100);
+        setBikes(data.products);
+      } else {
+        await loadBikes();
+        return;
+      }
       setError(null);
     } catch (err) {
       setError('Erreur lors de la recherche');
@@ -62,30 +76,25 @@ const ProductList = () => {
     }
   };
 
-  const handleCategoryFilter = async (category) => {
-    try {
-      setLoading(true);
-      setSelectedCategory(category);
-      if (category === '') {
-        await loadBikes();
-      } else {
-        const data = await bikeService.getBikesByCategory(category);
-        setBikes(data);
-      }
-      setError(null);
-    } catch (err) {
-      setError('Erreur lors du filtrage par catégorie');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleFilterChange = useCallback((newFilters) => {
+    setFilters(newFilters);
+  }, []);
 
   const clearFilters = () => {
-    setSelectedCategory('');
-    setSearchQuery('');
-    setPriceRange({ min: '', max: '' });
-    loadBikes();
+    setFilters({
+      search: '',
+      category: '',
+      minPrice: '',
+      maxPrice: '',
+      brandId: '',
+      brakeTypeId: '',
+      transmitionTypeId: '',
+      frameSizeId: '',
+      wheelSizeId: '',
+      typeVeloId: '',
+      tyresId: '',
+      teamId: '',
+    });
   };
 
   const handleProductClick = (productId) => {
@@ -108,57 +117,12 @@ const ProductList = () => {
           </p>
         </div>
 
-        {/* Filtres et recherche */}
-        <div className="bike-filters">
-          <div className="filter-group">
-            <input
-              type="text"
-              placeholder="Rechercher un vélo..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
-            />
-            <button onClick={handleSearch} className="search-btn">
-              🔍 Rechercher
-            </button>
-          </div>
-
-          <div className="filter-group">
-            <select
-              value={selectedCategory}
-              onChange={(e) => handleCategoryFilter(e.target.value)}
-              className="category-select"
-            >
-              <option value="">Toutes les catégories</option>
-              {categories.map((categoryObj) => (
-                <option key={categoryObj.category} value={categoryObj.category}>
-                  {categoryObj.category} ({categoryObj.productCount})
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="filter-group">
-            <input
-              type="number"
-              placeholder="Prix min"
-              value={priceRange.min}
-              onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
-              className="price-input"
-            />
-            <input
-              type="number"
-              placeholder="Prix max"
-              value={priceRange.max}
-              onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
-              className="price-input"
-            />
-          </div>
-
-          <button onClick={clearFilters} className="clear-filters-btn">
-            Effacer les filtres
-          </button>
-        </div>
+        {/* Filtres avancés */}
+        <BikeFilters
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          onClearFilters={clearFilters}
+        />
 
         {/* Affichage des vélos */}
         {loading && (

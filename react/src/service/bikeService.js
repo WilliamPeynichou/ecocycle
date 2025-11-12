@@ -32,14 +32,24 @@ export const bikeService = {
     }
   },
 
-  // Rechercher des vélos
-  async searchBikes(query, category = '', minPrice = '', maxPrice = '', limit = 50, offset = 0) {
+  // Rechercher des vélos avec filtres avancés
+  async searchBikes(filters = {}, limit = 50, offset = 0) {
     try {
       const params = new URLSearchParams();
-      if (query) params.append('q', query);
-      if (category) params.append('category', category);
-      if (minPrice) params.append('min_price', minPrice);
-      if (maxPrice) params.append('max_price', maxPrice);
+      
+      if (filters.search) params.append('q', filters.search);
+      if (filters.category) params.append('category', filters.category);
+      if (filters.minPrice) params.append('min_price', filters.minPrice);
+      if (filters.maxPrice) params.append('max_price', filters.maxPrice);
+      if (filters.brandId) params.append('brand_id', filters.brandId);
+      if (filters.brakeTypeId) params.append('brake_type_id', filters.brakeTypeId);
+      if (filters.transmitionTypeId) params.append('transmition_type_id', filters.transmitionTypeId);
+      if (filters.frameSizeId) params.append('frame_size_id', filters.frameSizeId);
+      if (filters.wheelSizeId) params.append('wheel_size_id', filters.wheelSizeId);
+      if (filters.typeVeloId) params.append('type_velo_id', filters.typeVeloId);
+      if (filters.tyresId) params.append('tyres_id', filters.tyresId);
+      if (filters.teamId) params.append('team_id', filters.teamId);
+      
       params.append('limit', limit);
       params.append('offset', offset);
 
@@ -96,9 +106,43 @@ export const bikeService = {
 
   // Formater la description (tronquer si trop longue)
   formatDescription(description, maxLength = 100) {
+    if (!description) return '';
     if (description.length <= maxLength) {
       return description;
     }
     return description.substring(0, maxLength) + '...';
+  },
+
+  // Récupérer les options de filtres
+  async getFilterOptions() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/references/all`);
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des options de filtres');
+      }
+      const data = await response.json();
+      
+      // Récupérer aussi les catégories
+      const categoriesResponse = await fetch(`${API_BASE_URL}/products/categories`);
+      const categoriesData = await categoriesResponse.json();
+      
+      return {
+        ...data.data,
+        categories: categoriesData.data || []
+      };
+    } catch (error) {
+      console.error('Erreur bikeService.getFilterOptions:', error);
+      return {
+        brands: [],
+        types: [],
+        frameSizes: [],
+        wheelSizes: [],
+        tyres: [],
+        transmissions: [],
+        brakes: [],
+        teams: [],
+        categories: []
+      };
+    }
   }
 };

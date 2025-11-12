@@ -3,26 +3,48 @@ const API_BASE_URL = '/api';
 
 const getAuthHeaders = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  return {
+  const headers = {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${user.token || ''}`,
   };
+  
+  // Ajouter l'email de l'utilisateur dans les headers pour l'authentification stateless
+  if (user.email) {
+    headers['X-User-Email'] = user.email;
+  }
+  
+  // Si un token existe, l'ajouter aussi
+  if (user.token) {
+    headers['Authorization'] = `Bearer ${user.token}`;
+  }
+  
+  return headers;
 };
 
 export const userService = {
   // Récupérer le profil complet de l'utilisateur
   async getProfile() {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+      // Essayer d'abord /api/users/profile, puis /api/auth/profile en fallback
+      let response = await fetch(`${API_BASE_URL}/users/profile`, {
         method: 'GET',
         headers: getAuthHeaders(),
       });
 
       if (!response.ok) {
+        // Fallback sur /api/auth/profile
+        response = await fetch(`${API_BASE_URL}/auth/profile`, {
+          method: 'GET',
+          headers: getAuthHeaders(),
+        });
+      }
+
+      if (!response.ok) {
         throw new Error('Erreur lors de la récupération du profil');
       }
 
-      return await response.json();
+      const data = await response.json();
+      // Normaliser la réponse (peut venir de /users/profile ou /auth/profile)
+      return data.user || data.data || data;
     } catch (error) {
       console.error('Erreur userService.getProfile:', error);
       throw error;

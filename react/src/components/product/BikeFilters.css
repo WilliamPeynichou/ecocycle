@@ -1,0 +1,151 @@
+.bike-filters-container {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color, #e0e0e0);
+}
+
+.filters-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filters-title h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-color, #333);
+}
+
+.active-filters-badge {
+  background: var(--primary-color, #007bff);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.filters-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-clear-filters,
+.btn-toggle-filters {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.btn-clear-filters {
+  color: var(--error-color, #dc3545);
+  border-color: var(--error-color, #dc3545);
+}
+
+.btn-clear-filters:hover {
+  background: var(--error-color, #dc3545);
+  color: white;
+}
+
+.btn-toggle-filters:hover {
+  background: var(--hover-bg, #f5f5f5);
+}
+
+.filters-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.filters-content.expanded {
+  max-height: 2000px;
+  transition: max-height 0.5s ease-in;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-color, #333);
+}
+
+.search-input,
+.filter-select,
+.price-input {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s;
+  width: 100%;
+}
+
+.search-input:focus,
+.filter-select:focus,
+.price-input:focus {
+  outline: none;
+  border-color: var(--primary-color, #007bff);
+}
+
+.price-range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price-input {
+  flex: 1;
+}
+
+.price-separator {
+  color: var(--text-muted, #666);
+  font-weight: 500;
+}
+
+.bike-filters-loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted, #666);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filters-content {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .filters-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
