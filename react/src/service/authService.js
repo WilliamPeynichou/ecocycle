@@ -5,17 +5,41 @@ export const authService = {
   // Inscription
   async register(userData) {
     try {
+      console.log('authService.register: Données reçues:', userData);
+      
+      // Convertir les noms de champs camelCase en snake_case pour correspondre au backend
+      const backendData = {
+        username: userData.username,
+        email: userData.email,
+        email_confirm: userData.emailConfirm || userData.email_confirm,
+        password: userData.password,
+        password_confirm: userData.passwordConfirm || userData.password_confirm,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        phone: userData.phone || null
+      };
+
+      console.log('authService.register: Données transformées pour le backend:', backendData);
+      console.log('authService.register: URL:', `${API_BASE_URL}/auth/register`);
+
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(backendData),
       });
 
+      console.log('authService.register: Réponse reçue, status:', response.status, response.statusText);
+
       const data = await response.json();
+      console.log('authService.register: Données parsées:', data);
 
       if (!response.ok) {
+        // Gérer les erreurs de validation
+        if (data.errors && Array.isArray(data.errors)) {
+          throw new Error(data.errors.join(', '));
+        }
         throw new Error(data.message || 'Erreur lors de l\'inscription');
       }
 

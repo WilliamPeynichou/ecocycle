@@ -95,23 +95,42 @@ const Register = ({ onRegister, onSwitchToLogin, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Register: handleSubmit appelé', formData);
     
-    if (!validateForm()) {
+    const isValid = validateForm();
+    console.log('Register: Validation résultat:', isValid, 'Erreurs:', errors);
+    
+    if (!isValid) {
+      console.log('Register: Validation échouée, arrêt de la soumission');
       return;
     }
 
+    console.log('Register: Validation réussie, démarrage du fetch...');
     setLoading(true);
     setError('');
 
     try {
+      console.log('Register: Appel authService.register avec:', formData);
       const result = await authService.register(formData);
+      console.log('Register: Réponse reçue:', result);
       
-      if (result.success) {
-        onRegister(result.user);
-        onClose();
+      if (result && result.success) {
+        console.log('Register: Inscription réussie, fermeture du modal');
+        if (onRegister) {
+          onRegister(result.user);
+        }
+        if (onClose) {
+          onClose();
+        }
+      } else {
+        const errorMsg = result?.message || 'Erreur lors de l\'inscription';
+        console.error('Register: Réponse sans succès:', errorMsg);
+        setError(errorMsg);
       }
     } catch (err) {
-      setError(err.message);
+      console.error('Register: Erreur capturée:', err);
+      const errorMessage = err.message || err.toString() || 'Une erreur est survenue lors de l\'inscription';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -260,6 +279,10 @@ const Register = ({ onRegister, onSwitchToLogin, onClose }) => {
           type="submit" 
           className="btn-primary auth-btn"
           disabled={loading}
+          onClick={(e) => {
+            console.log('Register: Bouton cliqué');
+            // Ne pas empêcher le submit, juste logger
+          }}
         >
           {loading ? 'Inscription...' : 'S\'inscrire'}
         </button>
