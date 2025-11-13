@@ -1,0 +1,134 @@
+{
+  "name": "Agent Vendeur Vélo ChatGPT",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "agent-velo-chat"
+    },
+    {
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "operation": "message",
+        "model": "gpt-4",
+        "options": {},
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Tu es Conseiller Vélo Virtuel, un assistant expert en vente de vélos pour Ecocycle. Tu communiques exclusivement en français, avec un ton professionnel, amical et passionné.\n\nTon rôle est d'aider les clients à :\n1. Définir leurs besoins (type de vélo, budget, usage quotidien)\n2. Recommander les modèles les plus adaptés à leurs besoins\n3. Fournir des informations détaillées sur les caractéristiques techniques\n4. Faciliter la décision d'achat et répondre à toutes leurs questions\n\nSois toujours courtois, précis et orienté solution. Si tu ne connais pas un modèle spécifique, propose des alternatives ou demande plus de détails pour mieux conseiller."
+            },
+            {
+              "role": "user",
+              "content": "={{ $json.body.message || $json.body.chatInput || $json.body.text || 'Bonjour' }}"
+            }
+          ]
+        }
+      },
+      "id": "openai-chat",
+      "name": "ChatGPT",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [450, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "ChatGPT API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "response-field",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "success-field",
+              "name": "success",
+              "value": "=true",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-response",
+      "name": "Formater Réponse",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "webhook-response",
+      "name": "Répondre au Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [850, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "ChatGPT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ChatGPT": {
+      "main": [
+        [
+          {
+            "node": "Formater Réponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formater Réponse": {
+      "main": [
+        [
+          {
+            "node": "Répondre au Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-11-13T12:00:00.000Z",
+  "versionId": "1"
+}
+

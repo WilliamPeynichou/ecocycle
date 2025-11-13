@@ -17,14 +17,39 @@ const Profile = ({ user, onBack, onUserUpdate }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Debug: log pour voir ce qui se passe
+  useEffect(() => {
+    if (error) {
+      console.error('Erreur Profile:', error);
+    }
+  }, [error]);
+
   useEffect(() => {
     loadProfileData();
-  }, []);
+  }, [user]); // Recharger si le user change
 
   const loadProfileData = async () => {
     try {
       setLoading(true);
       setError(null);
+
+      // Vérifier que l'utilisateur est bien dans localStorage
+      let storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      // Si pas d'email dans localStorage mais qu'on a un user en props, l'utiliser
+      if (!storedUser.email && user && user.email) {
+        console.warn('Aucun email trouvé dans localStorage, utilisation des données user passées en props');
+        // Mettre à jour localStorage avec les données du user en props
+        storedUser = { ...storedUser, ...user };
+        localStorage.setItem('user', JSON.stringify(storedUser));
+      }
+      
+      if (!storedUser.email) {
+        console.error('Aucun email disponible pour l\'authentification');
+        setError('Vous devez être connecté pour accéder à votre profil');
+        setLoading(false);
+        return;
+      }
 
       // Charger toutes les données en parallèle
       const [profileRes, ordersRes, messagesRes, addressesRes] = await Promise.allSettled([
@@ -43,20 +68,30 @@ const Profile = ({ user, onBack, onUserUpdate }) => {
       }
 
       if (messagesRes.status === 'fulfilled') {
-        setMessages(messagesRes.value.messages || messagesRes.value || []);
+        // L'API retourne maintenant une liste simple de messages
+        const data = messagesRes.value;
+        const messagesData = data.messages || (Array.isArray(data) ? data : []);
+        setMessages(messagesData);
+      } else {
+        // En cas d'erreur, initialiser avec un tableau vide
+        setMessages([]);
       }
 
       if (addressesRes.status === 'fulfilled') {
         setAddresses(addressesRes.value.addresses || addressesRes.value || []);
       }
 
-      // Gérer les erreurs
+      // Gérer les erreurs - seulement si toutes les requêtes ont échoué
       const errors = [profileRes, ordersRes, messagesRes, addressesRes]
         .filter(result => result.status === 'rejected')
-        .map(result => result.reason.message);
+        .map(result => result.reason?.message || 'Erreur inconnue');
 
-      if (errors.length > 0 && errors.length === 4) {
-        setError('Impossible de charger les données du profil');
+      // Si toutes les requêtes ont échoué, afficher une erreur
+      if (errors.length === 4) {
+        setError('Impossible de charger les données du profil. Vérifiez votre connexion.');
+      } else if (errors.length > 0) {
+        // Si seulement certaines requêtes ont échoué, on continue quand même
+        console.warn('Certaines données n\'ont pas pu être chargées:', errors);
       }
     } catch (err) {
       setError(err.message || 'Erreur lors du chargement du profil');
@@ -106,7 +141,8 @@ const Profile = ({ user, onBack, onUserUpdate }) => {
     );
   }
 
-  if (error && !profileData) {
+  // Afficher une erreur seulement si on n'a aucune donnée utilisateur
+  if (error && !profileData && !user) {
     return (
       <div className="profile-error">
         <p>{error}</p>
@@ -121,6 +157,18 @@ const Profile = ({ user, onBack, onUserUpdate }) => {
   }
 
   const currentUser = profileData || user;
+
+  // Si aucun utilisateur n'est disponible, afficher un message
+  if (!currentUser && !loading) {
+    return (
+      <div className="profile-error">
+        <p>Vous devez être connecté pour accéder à votre profil.</p>
+        <button onClick={onBack} className="btn-secondary">
+          Retour
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">
@@ -159,7 +207,7 @@ const Profile = ({ user, onBack, onUserUpdate }) => {
               className={`nav-item ${activeTab === 'messages' ? 'active' : ''}`}
               onClick={() => setActiveTab('messages')}
             >
-              💬 Messages ({messages.filter(m => !m.isRead).length})
+              💬 Messages ({messages.length})
             </button>
             <button
               className={`nav-item ${activeTab === 'addresses' ? 'active' : ''}`}

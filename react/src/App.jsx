@@ -101,7 +101,7 @@ function App() {
         isDarkMode={isDarkMode}
         onDarkModeToggle={handleDarkModeToggle}
       />
-      {showProfile && user ? (
+      {showProfile ? (
         <Profile 
           user={user}
           onBack={handleProfileBack}

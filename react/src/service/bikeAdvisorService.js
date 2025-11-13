@@ -1,12 +1,21 @@
 // Service pour communiquer avec l'API de conseil vélo
 export const sendMessageToAgent = async (message, sessionId) => {
   try {
+    // Récupère l'utilisateur connecté pour l'authentification
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    
+    // Ajoute l'email de l'utilisateur pour l'authentification stateless
+    if (user.email) {
+      headers['X-User-Email'] = user.email;
+    }
+    
     // Utilise l'API Symfony locale pour le conseil vélo
     const response = await fetch('/api/bike-advice', {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json' 
-      },
+      headers: headers,
       body: JSON.stringify({
         message: message,
         sessionId: sessionId || `user-${Date.now()}`
@@ -24,7 +33,11 @@ export const sendMessageToAgent = async (message, sessionId) => {
       return null;
     }
     
-    return data.advice;
+    // Retourne la réponse et le sessionId pour continuer la conversation
+    return {
+      advice: data.advice,
+      sessionId: data.sessionId || sessionId
+    };
   } catch (error) {
     console.error('Erreur agent vélo:', error);
     // Retourne null en cas d'erreur pour forcer l'utilisation de n8n

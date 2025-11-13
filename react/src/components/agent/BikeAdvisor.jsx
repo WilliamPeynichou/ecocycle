@@ -11,27 +11,36 @@ const BikeAdvisor = ({ onToggle }) => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [sessionId] = useState('087eac84444f4a16a6daeeb1a995cbb1');
+  const [sessionId, setSessionId] = useState(() => {
+    // Génère un sessionId unique par session de conversation
+    return `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  });
   const [isOpen, setIsOpen] = useState(true);
+  const [showEndConfirmation, setShowEndConfirmation] = useState(false);
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMessage = { role: 'user', text: input };
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = input;
     setInput('');
     setIsLoading(true);
 
     try {
-      const response = await sendMessageToAgent(input, sessionId);
+      const response = await sendMessageToAgent(currentInput, sessionId);
       
       // Si pas de réponse de l'agent n8n, ne pas ajouter de message
-      if (response) {
-        const agentMessage = { role: 'agent', text: response };
+      if (response && response.advice) {
+        const agentMessage = { role: 'agent', text: response.advice };
         setMessages(prev => [...prev, agentMessage]);
+        
+        // Met à jour le sessionId si retourné par l'API
+        if (response.sessionId) {
+          setSessionId(response.sessionId);
+        }
       }
     } catch (error) {
-
       console.error('Erreur communication agent:', error);
       // Ne pas afficher de message d'erreur, laisser l'utilisateur réessayer
     } finally {
@@ -44,6 +53,32 @@ const BikeAdvisor = ({ onToggle }) => {
       e.preventDefault();
       handleSend();
     }
+  };
+
+  const handleEndConversation = () => {
+    // Les messages sont déjà sauvegardés en BDD avec le sessionId actuel
+    // On génère un nouveau sessionId pour la prochaine conversation
+    const newSessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    setSessionId(newSessionId);
+    
+    // Afficher un message de confirmation
+    setShowEndConfirmation(true);
+    
+    // Réinitialiser les messages avec juste le message de bienvenue
+    setMessages([
+      {
+        role: 'agent',
+        text: 'Bonjour ! Je suis votre conseiller vélo. Dites-moi quel type de vélo vous cherchez et je vous aiderai à choisir le meilleur modèle !'
+      }
+    ]);
+    
+    // Réinitialiser l'input
+    setInput('');
+    
+    // Masquer la confirmation après 3 secondes
+    setTimeout(() => {
+      setShowEndConfirmation(false);
+    }, 3000);
   };
 
   return (
@@ -92,6 +127,25 @@ const BikeAdvisor = ({ onToggle }) => {
               </div>
             )}
           </div>
+          
+          {/* Bouton Fin de conversation - affiché seulement s'il y a des messages utilisateur */}
+          {messages.filter(msg => msg.role === 'user').length > 0 && (
+            <div className="end-conversation-container">
+              {showEndConfirmation && (
+                <div className="end-conversation-confirmation">
+                  ✓ Conversation enregistrée ! Vous pouvez la retrouver dans votre profil.
+                </div>
+              )}
+              <button 
+                onClick={handleEndConversation}
+                className="end-conversation-button"
+                disabled={isLoading}
+                title="Terminer cette conversation et en commencer une nouvelle. La conversation sera visible dans votre profil."
+              >
+                ✓ Fin de conversation
+              </button>
+            </div>
+          )}
           
           <div className="input-container">
             <input 

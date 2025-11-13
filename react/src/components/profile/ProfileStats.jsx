@@ -14,8 +14,6 @@ const ProfileStats = ({ user, orders, messages, addresses }) => {
     order.status?.code === 'pending' || order.status?.code === 'processing'
   ).length;
 
-  const unreadMessages = messages.filter(m => !m.isRead).length;
-
   const formatPrice = (price) => {
     return new Intl.NumberFormat('fr-FR', {
       style: 'currency',
@@ -42,7 +40,7 @@ const ProfileStats = ({ user, orders, messages, addresses }) => {
       value: messages.length,
       icon: '💬',
       color: '#17a2b8',
-      subtitle: unreadMessages > 0 ? `${unreadMessages} non lus` : 'Tous lus'
+      subtitle: `${messages.length} message${messages.length > 1 ? 's' : ''} envoyé${messages.length > 1 ? 's' : ''}`
     },
     {
       title: 'Adresses',

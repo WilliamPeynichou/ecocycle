@@ -10,6 +10,8 @@ const getAuthHeaders = () => {
   // Ajouter l'email de l'utilisateur dans les headers pour l'authentification stateless
   if (user.email) {
     headers['X-User-Email'] = user.email;
+  } else {
+    console.warn('getAuthHeaders: Aucun email trouvé dans localStorage.user:', user);
   }
   
   // Si un token existe, l'ajouter aussi
@@ -54,13 +56,23 @@ export const userService = {
   // Récupérer les commandes de l'utilisateur
   async getOrders() {
     try {
+      const headers = getAuthHeaders();
+      console.log('getOrders - Headers:', headers);
+      
+      if (!headers['X-User-Email']) {
+        throw new Error('Email utilisateur manquant. Veuillez vous reconnecter.');
+      }
+      
       const response = await fetch(`${API_BASE_URL}/users/orders`, {
         method: 'GET',
-        headers: getAuthHeaders(),
+        headers: headers,
+        credentials: 'include'
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des commandes');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('getOrders - Erreur:', response.status, errorData);
+        throw new Error(errorData.message || 'Erreur lors de la récupération des commandes');
       }
 
       return await response.json();
@@ -73,16 +85,34 @@ export const userService = {
   // Récupérer les messages à l'agent
   async getMessages() {
     try {
+      const headers = getAuthHeaders();
+      const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      console.log('getMessages - localStorage.user:', storedUser);
+      console.log('getMessages - Headers envoyés:', headers);
+      
+      if (!headers['X-User-Email']) {
+        console.error('getMessages - Email manquant dans headers!');
+        throw new Error('Email utilisateur manquant. Veuillez vous reconnecter.');
+      }
+      
       const response = await fetch(`${API_BASE_URL}/users/messages`, {
         method: 'GET',
-        headers: getAuthHeaders(),
+        headers: headers,
+        credentials: 'include' // Inclure les cookies si nécessaire
       });
 
+      console.log('getMessages - Response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des messages');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('getMessages - Erreur:', response.status, errorData);
+        throw new Error(errorData.message || 'Erreur lors de la récupération des messages');
       }
 
-      return await response.json();
+      const data = await response.json();
+      console.log('getMessages - Success:', data);
+      return data;
     } catch (error) {
       console.error('Erreur userService.getMessages:', error);
       throw error;
@@ -92,13 +122,23 @@ export const userService = {
   // Récupérer les adresses
   async getAddresses() {
     try {
+      const headers = getAuthHeaders();
+      console.log('getAddresses - Headers:', headers);
+      
+      if (!headers['X-User-Email']) {
+        throw new Error('Email utilisateur manquant. Veuillez vous reconnecter.');
+      }
+      
       const response = await fetch(`${API_BASE_URL}/users/addresses`, {
         method: 'GET',
-        headers: getAuthHeaders(),
+        headers: headers,
+        credentials: 'include'
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des adresses');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('getAddresses - Erreur:', response.status, errorData);
+        throw new Error(errorData.message || 'Erreur lors de la récupération des adresses');
       }
 
       return await response.json();

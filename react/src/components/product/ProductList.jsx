@@ -62,7 +62,7 @@ const ProductList = () => {
       let data;
       if (hasFilters) {
         data = await bikeService.searchBikes(filters, 100);
-        setBikes(data.products);
+      setBikes(data.products);
       } else {
         await loadBikes();
         return;
