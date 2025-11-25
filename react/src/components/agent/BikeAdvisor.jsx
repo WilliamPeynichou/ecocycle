@@ -61,7 +61,7 @@ const BikeAdvisor = ({ onToggle }) => {
     const newSessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     setSessionId(newSessionId);
     
-    // Afficher un message de confirmation
+    // AfficherError in sub-node ‘Simple Memory‘ un message de confirmation
     setShowEndConfirmation(true);
     
     // Réinitialiser les messages avec juste le message de bienvenue

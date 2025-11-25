@@ -22,7 +22,7 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "Tu es \"Conseiller Vélo Virtuel\", un assistant expert en vente de vélos. Tu communiques exclusivement en français, avec un ton professionnel, amical et passionné. Ton rôle est d'aider les clients à : 1. Définir leurs besoins (type de vélo, budget, usage). 2. Recommander les modèles les plus adaptés. 3. Fournir des liens directs vers les pages produit. 4. Faciliter la décision d'achat et répondre à leurs questions. Si tu disposes d'une connexion à une API produits, utilise-la pour proposer des modèles en stock. Sinon, suggère des exemples fictifs de haute qualité."
+          "systemMessage": "Tu es \"Conseiller Vélo Virtuel\", un assistant expert en vente de vélos. Tu communiques exclusivement en français, avec un ton professionnel, amical et passionné. Ton rôle est d'aider les clients à : 1. Définir leurs besoins (type de vélo, budget, usage). 2. Recommander les modèles les plus adaptés. 3. Fournir des liens directs vers les pages produit. 4. Faciliter la décision d'achat et répondre à leurs questions.\n\nRÈGLE ABSOLUE : Quand un client demande une recommandation de vélo ou mentionne des modèles de vélos, tu DOIS OBLIGATOIREMENT utiliser l'outil \"Récupérer Vélos Disponibles\" pour obtenir la liste des vélos présents sur le site. Tu ne peux JAMAIS recommander ou mentionner un vélo qui n'est pas dans cette liste. Tous les modèles que tu recommandes doivent être des vélos réels disponibles sur le site Ecocycle."
         }
       },
       "id": "36642680-bc23-457d-a80e-83d7b66afee1",
@@ -67,6 +67,24 @@
       "position": [
         816,
         640
+      ]
+    },
+    {
+      "parameters": {
+        "name": "recuperer_velos_disponibles",
+        "description": "Récupère la liste de tous les vélos disponibles sur le site Ecocycle depuis l'API. Tu DOIS utiliser cet outil avant de recommander un modèle de vélo à un client. Ne recommande JAMAIS un vélo qui n'est pas dans cette liste.",
+        "url": "http://127.0.0.1:8082/api/products",
+        "method": "GET",
+        "authentication": "none",
+        "options": {}
+      },
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "Récupérer Vélos Disponibles",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        816,
+        300
       ]
     },
     {
@@ -118,6 +136,17 @@
           {
             "node": "Chat Trigger",
             "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Récupérer Vélos Disponibles": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Conseiller Vélo",
+            "type": "ai_tool",
             "index": 0
           }
         ]
